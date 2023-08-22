@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
 import { slice, loadingSlice, AccessTokenSlice } from '../reducers/reducer';
-import CustomSlice  from '../../helper/customReducer';
+import CustomSlice  from '../../helper/customSlice';
 import whitelist_arr from '../../helper/persist_whitelist'
 // Combine the reducers from the 'slice' object
 
