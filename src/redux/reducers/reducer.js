@@ -36,10 +36,10 @@ export const createApiThunk = (thunkName, payload, loadingData) =>
         response.expireDate = expireDate;
       }
 
-      console.log(response);
+      // console.log(response);
       return response || null;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       throw error;
     } finally {
       thunkAPI.dispatch(loadingSlice.actions.setLoading(loadingData));

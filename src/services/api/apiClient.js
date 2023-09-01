@@ -33,10 +33,10 @@ const callApi = (apiName) => {
   let missing_AccessToken = false;
 
   const apiCall = {
-    withSegment: (segmentData) => {
-      segment = segmentData;
-      return apiCall;
-    },
+    // withSegment: (segmentData) => {
+    //   segment = segmentData;
+    //   return apiCall;
+    // },
     withKeyParameter: (keyparameterData) => {
       for (const key in keyparameterData) {
         if (typeof keyparameterData[key] == 'number' || typeof keyparameterData[key] == 'string' || Array.isArray(keyparameterData[key]) == false) {
@@ -76,10 +76,8 @@ const callApi = (apiName) => {
           }
           : { [token_key]: state("AccessToken") };
       } else if (endpoint?.token === "require") {
-        console.log(
-          `User needs to login. ${endpointKey} API call was terminated.`
-        );
         missing_AccessToken = true;
+        throw new Error(`User needs to login. ${endpointKey} API call was terminated.`)
       }
       return apiCall;
     },
@@ -118,7 +116,7 @@ const callApi = (apiName) => {
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
         const localstorage = await storage.getItem("persist:root");
-        endpointKey = endpointKey + "_data";
+        endpointKey = endpointKey;
         if (localstorage) {
           const parsedLocalStorage = JSON.parse(localstorage);
           const check_data = parsedLocalStorage[apiGroup];
@@ -127,7 +125,7 @@ const callApi = (apiName) => {
             endpointData = JSON.parse(check_data)?.[endpointKey];
           }
 
-          if (endpointData && endpointData.expireDate) {
+          if (endpointData && endpointData.data.expireDate) {
             const currentDate = new Date();
             const expireDate = new Date(endpointData.expireDate);
             if (currentDate > expireDate) {
