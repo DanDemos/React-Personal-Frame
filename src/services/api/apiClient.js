@@ -42,6 +42,17 @@ const callApi = (apiName) => {
       params = paramData;
       return apiCall;
     },
+    withKeyParameter: (keyparameterData) => {
+      for (const key in keyparameterData) {
+        if (typeof keyparameterData[key] == 'number' || typeof keyparameterData[key] == 'string' || Array.isArray(keyparameterData[key]) == false) {
+          if (keyparameter == null) {
+            keyparameter = {}
+          }
+          keyparameter[key] = keyparameterData[key]
+        }
+      }
+      return apiCall;
+    },
     withHeaders: (headersData) => {
       headers = headersData;
       return apiCall;
