@@ -29,6 +29,7 @@ const callApi = (apiName) => {
   let segment = null;
   let headers = null;
   let body = null;
+  let keyparameter = null;
   let params = null;
   let group_name = null;
   let missing_AccessToken = false;
