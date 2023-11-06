@@ -119,7 +119,7 @@ const callApi = (apiName) => {
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
         const localstorage = await storage.getItem("persist:root");
-        endpointKey = endpointKey + "_data";
+        endpointKey = endpointKey;
         if (localstorage) {
           const parsedLocalStorage = JSON.parse(localstorage);
           const check_data = parsedLocalStorage[apiGroup];
@@ -128,7 +128,7 @@ const callApi = (apiName) => {
             endpointData = JSON.parse(check_data)?.[endpointKey];
           }
 
-          if (endpointData && endpointData.expireDate) {
+          if (endpointData && endpointData.data.expireDate) {
             const currentDate = new Date();
             const expireDate = new Date(endpointData.expireDate);
             if (currentDate > expireDate) {
