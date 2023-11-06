@@ -34,10 +34,10 @@ const callApi = (apiName) => {
   let missing_AccessToken = false;
 
   const apiCall = {
-    withSegment: (segmentData) => {
-      segment = segmentData;
-      return apiCall;
-    },
+    // withSegment: (segmentData) => {
+    //   segment = segmentData;
+    //   return apiCall;
+    // },
     withParam: (paramData) => {
       params = paramData;
       return apiCall;
