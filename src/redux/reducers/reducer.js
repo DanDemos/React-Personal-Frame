@@ -8,7 +8,7 @@ import {
   isRejectedAction,
 } from "../actions/reduxActionHelpers";
 import trueTypeOf from "../util/trueTypeOf";
-import customReducer from "../../helper/customReducer";
+import FrameSliceReducer from "../../helper/FrameSliceReducer";
 
 export const createApiThunk = (thunkName, payload, loadingData) =>
   createAsyncThunk(`${thunkName}`, async (data, thunkAPI) => {
