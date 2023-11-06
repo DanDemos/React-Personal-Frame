@@ -77,10 +77,8 @@ const callApi = (apiName) => {
             }
           : { [token_key]: state("AccessToken") };
       } else if (endpoint?.token === "require") {
-        console.log(
-          `User needs to login. ${endpointKey} API call was terminated.`
-        );
         missing_AccessToken = true;
+        throw new Error(`User needs to login. ${endpointKey} API call was terminated.`)
       }
       return apiCall;
     },
