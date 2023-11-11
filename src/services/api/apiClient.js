@@ -100,7 +100,7 @@ const callApi = (apiName) => {
       dispatchStore(loadingSlice.actions.setLoading(loadingData));
       return res;
     },
-    executeDispatch: () => {
+    executeDispatch: async () => {
       if (missing_AccessToken) return;
 
       const payload = {
@@ -112,6 +112,7 @@ const callApi = (apiName) => {
         body,
       };
       uniqueAPI_id = GenerateID();
+      let response
       const loadingData = { uniqueAPI_id, group_name };
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
@@ -131,7 +132,7 @@ const callApi = (apiName) => {
             if (currentDate > expireDate) {
               console.log(currentDate > expireDate, "persist is expired");
               const asyncThunk = createApiThunk(thunkName, payload);
-              dispatchStore(asyncThunk());
+              response = await dispatchStore(asyncThunk());
             } else {
               console.log(
                 currentDate > expireDate,
@@ -140,17 +141,18 @@ const callApi = (apiName) => {
             }
           } else {
             const asyncThunk = createApiThunk(thunkName, payload, loadingData);
-            dispatchStore(asyncThunk());
+            response = await dispatchStore(asyncThunk());
           }
         } else {
           const asyncThunk = createApiThunk(thunkName, payload, loadingData);
-          dispatchStore(asyncThunk());
+          response = await dispatchStore(asyncThunk());
+
         }
         return uniqueAPI_id;
       };
 
-      getLocalStorage(apiGroup, endpointKey);
-      return uniqueAPI_id;
+      await getLocalStorage(apiGroup, endpointKey);
+      return response?.payload;
     },
   };
 
