@@ -1,6 +1,6 @@
 import { createApiThunk } from "../../redux/reducers/reducer";
 import { dispatch } from "../../redux/util/dispatchStore";
-import { state } from "../../redux/util/getStore";
+import { selectStore } from "../../lib/selectStore";
 import { endpoints } from "./endpoints";
 import storage from "redux-persist/lib/storage";
 import { GenerateID } from "../../redux/util/GenerateID";
@@ -8,8 +8,6 @@ import { token_endpoint } from "../../helper/setAccessToken";
 import { loadingSlice } from "../../redux/reducers/reducer";
 import callAxios from "./axios";
 import { token_key } from "../../helper/setAccessToken";
-import { AccessTokenSlice } from "../../redux/reducers/reducer";
-import { FindAccessToken } from "../../helper/setAccessToken";
 
 const callApi = (apiName) => {
   let uniqueAPI_id = null;
@@ -39,10 +37,6 @@ const callApi = (apiName) => {
     //   segment = segmentData;
     //   return apiCall;
     // },
-    withParam: (paramData) => {
-      params = paramData;
-      return apiCall;
-    },
     withKeyParameter: (keyparameterData) => {
       for (const key in keyparameterData) {
         if (typeof keyparameterData[key] == 'number' || typeof keyparameterData[key] == 'string' || Array.isArray(keyparameterData[key]) == false) {
@@ -52,6 +46,10 @@ const callApi = (apiName) => {
           keyparameter[key] = keyparameterData[key]
         }
       }
+      return apiCall;
+    },
+    withParam: (paramData) => {
+      params = paramData;
       return apiCall;
     },
     withHeaders: (headersData) => {
@@ -69,14 +67,14 @@ const callApi = (apiName) => {
     addAccessToken: () => {
       if (
         (endpoint?.token === "require" || endpoint?.token === "optional") &&
-        state("AccessToken").length > 0
+        selectStore("AccessToken").length > 0
       ) {
         headers = headers
           ? {
-              ...headers,
-              [token_key]: state("AccessToken"),
-            }
-          : { [token_key]: state("AccessToken") };
+            ...headers,
+            [token_key]: selectStore("AccessToken"),
+          }
+          : { [token_key]: selectStore("AccessToken") };
       } else if (endpoint?.token === "require") {
         missing_AccessToken = true;
         throw new Error(`User needs to login. ${endpointKey} API call was terminated.`)
@@ -88,6 +86,7 @@ const callApi = (apiName) => {
       const payload = {
         endpoint,
         segment,
+        keyparameter,
         params,
         headers,
         body,
@@ -95,11 +94,9 @@ const callApi = (apiName) => {
 
       uniqueAPI_id = GenerateID();
       const loadingData = { uniqueAPI_id, group_name };
+
       dispatch(loadingSlice.actions.setLoading(loadingData));
       const res = await callAxios(payload);
-      if(apiName == token_endpoint){
-        dispatch(AccessTokenSlice.actions.setAccessToken(FindAccessToken(res)))
-      }
       dispatch(loadingSlice.actions.setLoading(loadingData));
       return res;
     },
@@ -109,6 +106,7 @@ const callApi = (apiName) => {
       const payload = {
         endpoint,
         segment,
+        keyparameter,
         params,
         headers,
         body,
