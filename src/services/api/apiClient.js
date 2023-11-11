@@ -95,9 +95,9 @@ const callApi = (apiName) => {
       uniqueAPI_id = GenerateID();
       const loadingData = { uniqueAPI_id, group_name };
 
-      dispatch(loadingSlice.actions.setLoading(loadingData));
+      dispatchStore(loadingSlice.actions.setLoading(loadingData));
       const res = await callAxios(payload);
-      dispatch(loadingSlice.actions.setLoading(loadingData));
+      dispatchStore(loadingSlice.actions.setLoading(loadingData));
       return res;
     },
     executeDispatch: () => {
@@ -131,7 +131,7 @@ const callApi = (apiName) => {
             if (currentDate > expireDate) {
               console.log(currentDate > expireDate, "persist is expired");
               const asyncThunk = createApiThunk(thunkName, payload);
-              dispatch(asyncThunk());
+              dispatchStore(asyncThunk());
             } else {
               console.log(
                 currentDate > expireDate,
@@ -140,11 +140,11 @@ const callApi = (apiName) => {
             }
           } else {
             const asyncThunk = createApiThunk(thunkName, payload, loadingData);
-            dispatch(asyncThunk());
+            dispatchStore(asyncThunk());
           }
         } else {
           const asyncThunk = createApiThunk(thunkName, payload, loadingData);
-          dispatch(asyncThunk());
+          dispatchStore(asyncThunk());
         }
         return uniqueAPI_id;
       };
