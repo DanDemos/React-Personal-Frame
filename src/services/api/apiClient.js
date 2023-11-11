@@ -1,9 +1,9 @@
 import { createApiThunk } from "../../redux/reducers/reducer";
-import { dispatch } from "../../redux/util/dispatchStore";
+import { dispatchStore } from "../../lib/dispatchStore";
 import { selectStore } from "../../lib/selectStore";
 import { endpoints } from "./endpoints";
 import storage from "redux-persist/lib/storage";
-import { GenerateID } from "../../redux/util/GenerateID";
+import { GenerateID } from "../../lib/GenerateID";
 import { token_endpoint } from "../../helper/setAccessToken";
 import { loadingSlice } from "../../redux/reducers/reducer";
 import callAxios from "./axios";
