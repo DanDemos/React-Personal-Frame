@@ -89,7 +89,7 @@ const callAxios = async (payload) => {
           if (!obj.hasOwnProperty(key)) {
             throw new Error(`${key} is missing when calling api ${baseUrl}/${payload.endpoint.endpoint}`);
           }
-          else if (obj?.key == undefined || obj?.key == null || obj?.key == "") {
+          else if (obj[key] == undefined || obj[key] == null || obj[key] == "") {
             throw new Error(`Value of ${key} is ${obj?.key} when calling api ${baseUrl}/${payload.endpoint.endpoint}`);
           }
           return obj[key];
