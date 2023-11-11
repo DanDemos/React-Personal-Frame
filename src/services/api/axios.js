@@ -31,6 +31,7 @@ const callAxios = async (payload) => {
       if (payload.keyparameter) {
         try {
           config.url = replacePlaceholders(splitStringWithParams(config.url), payload?.keyparameter).join('')
+          console.log(payload.keyparameter, "config.url")
         } catch (error) {
           console.error(error.message);
         }
@@ -81,19 +82,26 @@ const callAxios = async (payload) => {
     });
 
   function replacePlaceholders(splitArr, obj) {
-    const replacedArr = splitArr.map(item => {
-      const match = item.match(/\{:(\w+)\}/); // Use regex to extract the key from {:key}
-      if (match) {
-        const key = match[1];
-        if (!obj.hasOwnProperty(key)) {
-          throw new Error(`${key} is missing in ${baseUrl}/${payload.endpoint.endpoint}`);
+    try {
+      const replacedArr = splitArr.map(item => {
+        const match = item.match(/\{:(\w+)\}/); // Use regex to extract the key from {:key}
+        if (match) {
+          const key = match[1];
+          if (!obj.hasOwnProperty(key)) {
+            throw new Error(`${key} is missing when calling api ${baseUrl}/${payload.endpoint.endpoint}`);
+          }
+          else if (obj?.key == undefined || obj?.key == null || obj?.key == "") {
+            throw new Error(`Value of ${key} is ${obj?.key} when calling api ${baseUrl}/${payload.endpoint.endpoint}`);
+          }
+          return obj[key];
         }
-        return obj[key];
-      }
-      return item;
-    });
-
-    return replacedArr;
+        return item;
+      });
+      return replacedArr;
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
 };
 
