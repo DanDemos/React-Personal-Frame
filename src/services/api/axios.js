@@ -4,7 +4,7 @@ import { API_URLs } from "./endpoints";
 // Determine the base URL based on the current environment
 const baseUrl =
   API_URLs[
-    window.location.hostname === "localhost" ? "development" : "production"
+  window.location.hostname === "localhost" ? "development" : "production"
   ];
 
 function splitStringWithParams(inputString) {
@@ -26,12 +26,22 @@ const callAxios = async (payload) => {
     config.url = `${baseUrl}/${payload.endpoint.endpoint}`;
   }
 
-  if (payload.keyparameter) {
-    try {
-      config.url = replacePlaceholders(splitStringWithParams(config.url), payload?.keyparameter).join('')
-    } catch (error) {
-      console.error(error.message);
+  try {
+    if ((/(\{:[a-zA-Z]+\})/g).test(config.url)) {
+      if (payload.keyparameter) {
+        try {
+          config.url = replacePlaceholders(splitStringWithParams(config.url), payload?.keyparameter).join('')
+        } catch (error) {
+          console.error(error.message);
+        }
+      }
+      else {
+        throw new Error(`Invalid API call: You are using a KeyParameter in ${config.url}, but the withKeyParameter chain function is not used when calling callApi().`);
+      }
     }
+  }
+  catch (error) {
+    console.error(error.message);
   }
 
   // Conditionally assign params if provided
@@ -70,21 +80,21 @@ const callAxios = async (payload) => {
       }
     });
 
-    function replacePlaceholders(splitArr, obj) {
-      const replacedArr = splitArr.map(item => {
-        const match = item.match(/\{:(\w+)\}/); // Use regex to extract the key from {:key}
-        if (match) {
-          const key = match[1];
-          if (!obj.hasOwnProperty(key)) {
-            throw new Error(`${key} is missing in ${baseUrl}/${payload.endpoint.endpoint}`);
-          }
-          return obj[key];
+  function replacePlaceholders(splitArr, obj) {
+    const replacedArr = splitArr.map(item => {
+      const match = item.match(/\{:(\w+)\}/); // Use regex to extract the key from {:key}
+      if (match) {
+        const key = match[1];
+        if (!obj.hasOwnProperty(key)) {
+          throw new Error(`${key} is missing in ${baseUrl}/${payload.endpoint.endpoint}`);
         }
-        return item;
-      });
-    
-      return replacedArr;
-    }
+        return obj[key];
+      }
+      return item;
+    });
+
+    return replacedArr;
+  }
 };
 
 export default callAxios;
