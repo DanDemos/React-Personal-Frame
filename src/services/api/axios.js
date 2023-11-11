@@ -31,7 +31,6 @@ const callAxios = async (payload) => {
       if (payload.keyparameter) {
         try {
           config.url = replacePlaceholders(splitStringWithParams(config.url), payload?.keyparameter).join('')
-          console.log(payload.keyparameter, "config.url")
         } catch (error) {
           console.error(error.message);
         }
