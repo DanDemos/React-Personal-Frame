@@ -7,7 +7,7 @@ import {
   isFulfilledAction,
   isRejectedAction,
 } from "../actions/reduxActionHelpers";
-import trueTypeOf from "../util/trueTypeOf";
+import trueTypeOf from "../../lib/trueTypeOf";
 import FrameSliceReducer from "../../helper/FrameSliceReducer";
 
 export const createApiThunk = (thunkName, payload, loadingData) =>
