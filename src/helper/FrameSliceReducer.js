@@ -1,4 +1,4 @@
-export const customReducer = {
+export const FrameSliceReducer = {
   clearSlice: (state, action) => {
     state = {};
     return state;
@@ -13,4 +13,4 @@ export const customReducer = {
   },
 };
 
-export default customReducer;
+export default FrameSliceReducer;
