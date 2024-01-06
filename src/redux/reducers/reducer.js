@@ -54,7 +54,7 @@ Object.entries(endpoints).forEach(([key]) => {
   slice[key] = createSlice({
     name: key,
     initialState,
-    reducers: customReducer,
+    reducers: FrameSliceReducer,
     extraReducers: (builder) => {
       builder
         .addMatcher(isPendingAction(`${key}/`), (state, action) => ({
