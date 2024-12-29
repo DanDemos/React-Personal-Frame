@@ -36,7 +36,7 @@ const LoginPage = () => {
           <LoadingComponent loadingGroup={"g"} loadingDesign={<h1>ooooooooooo</h1>}></LoadingComponent>
         </>
       }
-      <button onClick={login}>call api</button><br />
+      <button className='bg-red-500' onClick={login}>call api</button><br />
       <button onClick={login2}>call api2</button><br />
       <Link to="/">Go to home page</Link>
     </>
