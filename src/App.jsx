@@ -1,10 +1,11 @@
-import React from 'react'
-import AppLayout from "./routers";
+import './App.css'
+import AppLayout from './routers'
 
-const App = () => {
+function App() {
+
   return (
     <AppLayout />
   )
 }
 
-export default App;
+export default App

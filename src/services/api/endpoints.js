@@ -2,8 +2,8 @@ import { res_modifiers_config } from "../../helper/res_modifiers_config";
 
 // Define the API URLs for different environments
 export const API_URLs = {
-  production: "http://admin-uat.chainproshop.com",
-  development: "http://admin-uat.chainpromm.com",
+  production: import.meta.env.VITE_PRODUCTION_ENDPOINT,
+  development: import.meta.env.VITE_DEVELOP_ENDPOINT,
 };
 
 export const endpoints = Object.freeze({
